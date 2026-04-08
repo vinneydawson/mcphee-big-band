@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cb-blue: #0052FF;
+  --color-cb-gold: #C9A84C;
+  --color-surface: #1e2025;
+  --color-bg-primary: #0a0b0d;
+  --color-bg-secondary: #14161a;
+  --color-text-muted: #8a919e;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  background-color: #0a0b0d;
+  color: #ffffff;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Global film grain overlay --- */
+
+main {
+  position: relative;
+}
+
+main::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.5' intercept='-0.15'/%3E%3CfeFuncG type='linear' slope='1.5' intercept='-0.15'/%3E%3CfeFuncB type='linear' slope='1.5' intercept='-0.15'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  animation: grain-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes grain-drift {
+  0%   { opacity: 0.03; }
+  30%  { opacity: 0.045; }
+  60%  { opacity: 0.025; }
+  100% { opacity: 0.04; }
+}
+
+/* Heavier grain for secondary bg sections — varying density */
+.grain-heavy::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hgrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' seed='7' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2' intercept='-0.25'/%3E%3CfeFuncG type='linear' slope='2' intercept='-0.25'/%3E%3CfeFuncB type='linear' slope='2' intercept='-0.25'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hgrain)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+}
+
+/* Lighter grain variant */
+.grain-light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='lgrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' seed='13' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.5' intercept='-0.1'/%3E%3CfeFuncG type='linear' slope='1.5' intercept='-0.1'/%3E%3CfeFuncB type='linear' slope='1.5' intercept='-0.1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23lgrain)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+}
+
+/* --- Texture overlays --- */
+
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Hero background gradient animation --- */
+
+@keyframes hero-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 100% 50%; }
+  50%  { background-position: 50% 100%; }
+  75%  { background-position: 0% 0%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    #0a0b0d 0%,
+    #0d1020 20%,
+    #0a0b0d 40%,
+    #12091a 60%,
+    #0a0b0d 80%,
+    #091018 100%
+  );
+  background-size: 400% 400%;
+  animation: hero-gradient-shift 20s ease-in-out infinite;
+}
+
+.glow-blue::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(0, 82, 255, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dot-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gradient-fade-down {
+  position: relative;
+}
+.gradient-fade-down::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #0a0b0d);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gradient-fade-up {
+  position: relative;
+}
+.gradient-fade-up::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to top, transparent, #0a0b0d);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- Form input branding (date picker, select, color scheme) --- */
+
+/* Date input calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(0.7) sepia(1) hue-rotate(190deg) saturate(5);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Date input text when empty */
+input[type="date"]:invalid::-webkit-datetime-edit {
+  color: #8a919e;
+}
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  color: #ffffff;
+}
+input[type="date"]::-webkit-datetime-edit-text {
+  color: #8a919e;
+  padding: 0 2px;
+}
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+}
+
+/* Select dropdown arrow */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a919e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230052FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Select option styling (limited browser support but helps Chrome) */
+select option {
+  background-color: #1e2025;
+  color: #ffffff;
+  padding: 8px;
+}
+
+/* Autofill override to keep dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff;
+  -webkit-box-shadow: 0 0 0px 1000px #1e2025 inset;
+  box-shadow: 0 0 0px 1000px #1e2025 inset;
+  border-color: rgba(255, 255, 255, 0.1);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* --- Gold shimmer text --- */
+
+/* --- Mapbox popup overrides --- */
+
+.mapboxgl-popup-content {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #1e2025 !important;
+}
+
+.mapboxgl-ctrl-group {
+  background: #1e2025 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.mapboxgl-ctrl-group button {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+  filter: invert(1) brightness(0.7);
+}
+
+.gold-shimmer {
+  background: radial-gradient(
+    ellipse 40% 60% at 50% 50%,
+    #e0c068 0%,
+    #C9A84C 40%,
+    #b8923e 100%
+  );
+  background-size: 200% 100%;
+  background-position: 0% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 0.1em;
+}
+
+/* --- Selection & Focus --- */
+
+::selection {
+  background-color: #0052FF;
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid #0052FF;
+  outline-offset: 2px;
+}
+
+/* --- Reduced motion accessibility --- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  main::after {
+    animation: none !important;
+    opacity: 0.04 !important;
+  }
+
+  .gold-shimmer {
+    background-size: 100% 100% !important;
+  }
+}
