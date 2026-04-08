@@ -13,14 +13,12 @@ export async function POST(request: NextRequest) {
 
     // Add subscriber to mailing list audience
     if (process.env.RESEND_AUDIENCE_ID) {
-      const { data, error: contactError } = await getResend().contacts.create({
+      const { error: contactError } = await getResend().contacts.create({
         email,
         audienceId: process.env.RESEND_AUDIENCE_ID,
       })
       if (contactError) {
         console.error('Failed to add contact to audience:', contactError)
-      } else {
-        console.log('Contact added to audience:', data)
       }
     }
 
