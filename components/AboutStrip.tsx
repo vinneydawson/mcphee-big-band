@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 
 export default function AboutStrip() {
@@ -63,11 +64,13 @@ export default function AboutStrip() {
 
         {/* Right — Image */}
         <div ref={rightRef} className="opacity-0">
-          <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden">
-            <img
+          <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/3]">
+            <Image
               src="/images/about-band.jpg"
               alt="McPhee Big Band performing live"
-              className="w-full h-full object-cover aspect-[4/3]"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
             />
           </div>
         </div>

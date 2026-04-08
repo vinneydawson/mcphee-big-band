@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { Calendar, MapPin, Clock, Ticket } from 'lucide-react'
 import { nextShow, venue } from '@/lib/shows'
@@ -88,8 +89,8 @@ export default function HomeNextShow() {
 
         {/* Right — Visual placeholder */}
         <div ref={rightRef} className="opacity-0">
-          <div className="bg-surface border border-white/10 rounded-2xl aspect-[4/3] overflow-hidden">
-            <img src="/images/venue-show.jpg" alt="McPhee Big Band performing live at Roscoe's Jazz Lounge" className="w-full h-full object-cover" />
+          <div className="bg-surface border border-white/10 rounded-2xl aspect-[4/3] overflow-hidden relative">
+            <Image src="/images/venue-show.jpg" alt="McPhee Big Band performing live at Roscoe's Jazz Lounge" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
           </div>
         </div>
       </div>

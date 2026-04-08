@@ -14,6 +14,8 @@ interface SelectProps {
   options: SelectOption[]
   placeholder?: string
   className?: string
+  ariaDescribedBy?: string
+  ariaInvalid?: boolean
 }
 
 export default function Select({
@@ -22,6 +24,8 @@ export default function Select({
   options,
   placeholder = 'Select an option',
   className = '',
+  ariaDescribedBy,
+  ariaInvalid,
 }: SelectProps) {
   const [open, setOpen] = useState(false)
   const [dropUp, setDropUp] = useState(false)
@@ -75,6 +79,8 @@ export default function Select({
         type="button"
         onClick={() => setOpen(!open)}
         className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-cb-blue focus:border-transparent transition-all text-sm cursor-pointer"
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
       >
         <span className={selectedOption ? 'text-white' : 'text-text-muted'}>
           {selectedOption ? selectedOption.label : placeholder}

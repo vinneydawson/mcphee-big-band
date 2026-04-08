@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 
@@ -32,8 +33,8 @@ export default function PrivateEvents() {
     <div className="py-24 bg-bg-primary relative grain-light">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto px-6">
         {/* Left — Placeholder */}
-        <div className="bg-surface border border-white/10 rounded-2xl aspect-video overflow-hidden">
-          <img src="/images/band-wide.jpg" alt="McPhee Big Band full ensemble performance" className="w-full h-full object-cover" />
+        <div className="bg-surface border border-white/10 rounded-2xl aspect-video overflow-hidden relative">
+          <Image src="/images/band-wide.jpg" alt="McPhee Big Band full ensemble performance" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
         </div>
 
         {/* Right — Content */}

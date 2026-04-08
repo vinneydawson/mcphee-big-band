@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { gsap } from '@/lib/gsap'
 import ScrollIndicator from '@/components/ScrollIndicator'
@@ -59,11 +60,14 @@ export default function Hero() {
     >
       {/* Layer 1: Performance photo (heavily darkened) */}
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src="/images/venue-show.jpg"
           alt=""
           aria-hidden="true"
-          className="w-full h-full object-cover opacity-[0.15]"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-[0.15]"
         />
       </div>
 

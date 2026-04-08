@@ -1,0 +1,26 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { getResend } from '@/lib/resend'
+import { signupNotificationHtml } from '@/lib/email-templates'
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { email } = body
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
+    }
+
+    await getResend().emails.send({
+      from: 'McPhee Big Band <onboarding@resend.dev>',
+      to: 'account@uxsecuremail.com',
+      subject: `New Email Subscriber: ${email}`,
+      html: signupNotificationHtml(email),
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Email signup error:', error)
+    return NextResponse.json({ error: 'Failed to process signup' }, { status: 500 })
+  }
+}

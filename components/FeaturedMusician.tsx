@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 
 export default function FeaturedMusician() {
@@ -41,8 +42,8 @@ export default function FeaturedMusician() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-5">
             {/* Photo */}
-            <div className="lg:col-span-2 overflow-hidden">
-              <img src="/images/ewan-mcphee.jpg" alt="Ewan McPhee, Lead Trumpet" className="w-full h-full object-cover min-h-[300px]" />
+            <div className="lg:col-span-2 overflow-hidden relative min-h-[300px]">
+              <Image src="/images/ewan-mcphee.jpg" alt="Ewan McPhee, Lead Trumpet" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
             </div>
 
             {/* Bio */}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 
 export default function BandStory() {
@@ -41,11 +42,13 @@ export default function BandStory() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left — Image */}
           <div className="story-item">
-            <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden">
-              <img
+            <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/3]">
+              <Image
                 src="/images/about-stage.jpg"
                 alt="McPhee Big Band on stage"
-                className="w-full h-full object-cover aspect-[4/3]"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
           </div>

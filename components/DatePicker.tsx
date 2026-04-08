@@ -7,6 +7,8 @@ interface DatePickerProps {
   value: string
   onChange: (value: string) => void
   className?: string
+  ariaDescribedBy?: string
+  ariaInvalid?: boolean
 }
 
 const MONTHS = [
@@ -36,7 +38,7 @@ function formatDisplay(dateStr: string) {
   return `${MONTHS[m - 1]} ${d}, ${y}`
 }
 
-export default function DatePicker({ value, onChange, className = '' }: DatePickerProps) {
+export default function DatePicker({ value, onChange, className = '', ariaDescribedBy, ariaInvalid }: DatePickerProps) {
   const today = new Date()
   const [open, setOpen] = useState(false)
   const [dropUp, setDropUp] = useState(false)
@@ -112,6 +114,8 @@ export default function DatePicker({ value, onChange, className = '' }: DatePick
           setOpen(!open)
         }}
         className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-cb-blue focus:border-transparent transition-all text-sm cursor-pointer"
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
       >
         <span className={value ? 'text-white' : 'text-text-muted'}>
           {value ? formatDisplay(value) : 'Select a date'}

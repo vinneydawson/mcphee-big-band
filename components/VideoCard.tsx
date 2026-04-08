@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Play } from 'lucide-react'
 import type { VideoItem } from '@/lib/youtube'
 
@@ -28,10 +29,12 @@ export default function VideoCard({ video, onPlay, featured = false }: VideoCard
       {/* Thumbnail */}
       <div className="relative" style={{ aspectRatio: '16/9' }}>
         {video.thumbnail ? (
-          <img
+          <Image
             src={video.thumbnail}
             alt={video.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
           />
         ) : (
           <div className="absolute inset-0 bg-white/5 flex items-center justify-center">

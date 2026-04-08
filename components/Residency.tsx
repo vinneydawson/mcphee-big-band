@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { Calendar } from 'lucide-react'
 import { nextShow } from '@/lib/shows'
@@ -76,8 +77,8 @@ export default function Residency() {
 
         {/* Right Column */}
         <div ref={rightRef} className="opacity-0">
-          <div className="bg-surface border border-white/10 rounded-2xl aspect-video overflow-hidden">
-            <img src="/images/residency-show.jpg" alt="McPhee Big Band live at the monthly residency" className="w-full h-full object-cover" />
+          <div className="bg-surface border border-white/10 rounded-2xl aspect-video overflow-hidden relative">
+            <Image src="/images/residency-show.jpg" alt="McPhee Big Band live at the monthly residency" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
           </div>
           <p className="text-cb-blue text-xs font-semibold tracking-widest uppercase mt-6 mb-2">
             LIVE PERFORMANCE

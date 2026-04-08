@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 
 export default function MilesBio() {
@@ -46,8 +47,8 @@ export default function MilesBio() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto px-6">
         {/* Left — Portrait */}
         <div ref={leftRef} className="opacity-0">
-          <div className="bg-surface border border-white/10 rounded-2xl aspect-square overflow-hidden">
-            <img src="/images/miles-mcphee.jpg" alt="Miles McPhee, Music Director and Arranger" className="w-full h-full object-cover" />
+          <div className="bg-surface border border-white/10 rounded-2xl aspect-square overflow-hidden relative">
+            <Image src="/images/miles-mcphee.jpg" alt="Miles McPhee, Music Director and Arranger" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
           </div>
         </div>
 

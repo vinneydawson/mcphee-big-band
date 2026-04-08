@@ -7,7 +7,9 @@ export default function EmailSignup() {
   const [email, setEmail] = useState('')
   const [state, setState] = useState<'idle' | 'success' | 'error'>('idle')
 
-  const handleSubmit = (e: FormEvent) => {
+  const [submitting, setSubmitting] = useState(false)
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -15,10 +17,24 @@ export default function EmailSignup() {
       return
     }
 
-    // TODO: Wire to email service (Resend, Mailchimp, etc.)
-    console.log('Email signup:', email)
-    setState('success')
-    setEmail('')
+    setSubmitting(true)
+    try {
+      const res = await fetch('/api/email-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setState('success')
+        setEmail('')
+      } else {
+        setState('error')
+      }
+    } catch {
+      setState('error')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -44,10 +60,11 @@ export default function EmailSignup() {
           />
           <button
             type="submit"
-            className="bg-cb-blue text-white rounded-lg px-3 py-2 hover:bg-blue-600 transition-colors cursor-pointer flex-shrink-0"
+            disabled={submitting}
+            className="bg-cb-blue text-white rounded-lg px-3 py-2 hover:bg-blue-600 transition-colors cursor-pointer flex-shrink-0 disabled:opacity-60 disabled:cursor-not-allowed"
             aria-label="Subscribe"
           >
-            <Send className="w-4 h-4" />
+            <Send className={`w-4 h-4 ${submitting ? 'animate-pulse' : ''}`} />
           </button>
         </form>
       )}

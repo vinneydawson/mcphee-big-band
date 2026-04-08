@@ -53,7 +53,7 @@ export default function InquiryForm() {
   const [attemptedSubmit, setAttemptedSubmit] = useState(false)
   const [honeypot, setHoneypot] = useState('')
   const loadTimeRef = useRef(0)
-  const [submitState, setSubmitState] = useState<'idle' | 'success'>('idle')
+  const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
   useEffect(() => {
     loadTimeRef.current = Date.now()
@@ -113,7 +113,7 @@ export default function InquiryForm() {
         : 'border border-white/10 focus:ring-cb-blue'
     }`
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setAttemptedSubmit(true)
 
@@ -132,19 +132,28 @@ export default function InquiryForm() {
 
     if (Object.keys(newErrors).length > 0) return
 
-    // Spam checks
-    if (honeypot) {
-      setSubmitState('success')
-      return
-    }
+    // Spam checks — silently succeed
     const elapsed = (Date.now() - loadTimeRef.current) / 1000
-    if (elapsed < MIN_SUBMIT_TIME) {
+    if (honeypot || elapsed < MIN_SUBMIT_TIME) {
       setSubmitState('success')
       return
     }
 
-    console.log('Inquiry submitted:', form)
-    setSubmitState('success')
+    setSubmitState('submitting')
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, website: honeypot }),
+      })
+      if (res.ok) {
+        setSubmitState('success')
+      } else {
+        setSubmitState('error')
+      }
+    } catch {
+      setSubmitState('error')
+    }
   }
 
   const hasErrors = Object.keys(errors).length > 0 && attemptedSubmit
@@ -211,8 +220,10 @@ export default function InquiryForm() {
                 onBlur={() => handleBlur('name')}
                 placeholder="Your name"
                 className={inputClass('name')}
+                aria-describedby={errors.name ? 'name-error' : undefined}
+                aria-invalid={!!errors.name}
               />
-              {errors.name && <p className="text-red-400 text-xs mt-1.5">{errors.name}</p>}
+              {errors.name && <p id="name-error" role="alert" className="text-red-400 text-xs mt-1.5">{errors.name}</p>}
             </div>
 
             {/* Email */}
@@ -228,8 +239,10 @@ export default function InquiryForm() {
                 onBlur={() => handleBlur('email')}
                 placeholder="you@example.com"
                 className={inputClass('email')}
+                aria-describedby={errors.email ? 'email-error' : undefined}
+                aria-invalid={!!errors.email}
               />
-              {errors.email && <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>}
+              {errors.email && <p id="email-error" role="alert" className="text-red-400 text-xs mt-1.5">{errors.email}</p>}
             </div>
 
             {/* Phone */}
@@ -243,8 +256,10 @@ export default function InquiryForm() {
                 onBlur={() => handleBlur('phone')}
                 placeholder="(555) 000-0000"
                 className={inputClass('phone')}
+                aria-describedby={errors.phone ? 'phone-error' : undefined}
+                aria-invalid={!!errors.phone}
               />
-              {errors.phone && <p className="text-red-400 text-xs mt-1.5">{errors.phone}</p>}
+              {errors.phone && <p id="phone-error" role="alert" className="text-red-400 text-xs mt-1.5">{errors.phone}</p>}
             </div>
 
             {/* Event Type */}
@@ -261,8 +276,10 @@ export default function InquiryForm() {
                 options={eventTypeOptions}
                 placeholder="Select event type"
                 className={errors.eventType ? '[&>button]:border-red-500/60' : ''}
+                ariaDescribedBy={errors.eventType ? 'eventType-error' : undefined}
+                ariaInvalid={!!errors.eventType}
               />
-              {errors.eventType && <p className="text-red-400 text-xs mt-1.5">{errors.eventType}</p>}
+              {errors.eventType && <p id="eventType-error" role="alert" className="text-red-400 text-xs mt-1.5">{errors.eventType}</p>}
             </div>
 
             {/* Event Date */}
@@ -277,8 +294,10 @@ export default function InquiryForm() {
                   setTouched((prev) => ({ ...prev, eventDate: true }))
                 }}
                 className={errors.eventDate ? '[&>button]:border-red-500/60' : ''}
+                ariaDescribedBy={errors.eventDate ? 'eventDate-error' : undefined}
+                ariaInvalid={!!errors.eventDate}
               />
-              {errors.eventDate && <p className="text-red-400 text-xs mt-1.5">{errors.eventDate}</p>}
+              {errors.eventDate && <p id="eventDate-error" role="alert" className="text-red-400 text-xs mt-1.5">{errors.eventDate}</p>}
             </div>
 
             {/* Venue / Location */}
@@ -320,25 +339,36 @@ export default function InquiryForm() {
                 onBlur={() => handleBlur('message')}
                 placeholder="Tell us about your event..."
                 className={inputClass('message')}
+                aria-describedby={errors.message ? 'message-error' : undefined}
+                aria-invalid={!!errors.message}
               />
-              {errors.message && <p className="text-red-400 text-xs mt-1.5">{errors.message}</p>}
+              {errors.message && <p id="message-error" role="alert" className="text-red-400 text-xs mt-1.5">{errors.message}</p>}
             </div>
           </div>
 
           {/* Submit error summary */}
           {hasErrors && (
-            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+            <div role="alert" className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
               <p className="text-red-400 text-sm text-center">
                 Please fill in all required fields before submitting.
               </p>
             </div>
           )}
 
+          {submitState === 'error' && (
+            <div role="alert" className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+              <p className="text-red-400 text-sm text-center">
+                Something went wrong. Please try again or email us directly at info@mcpheebigband.com.
+              </p>
+            </div>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-cb-blue text-white rounded-full py-4 font-semibold text-base hover:bg-blue-600 transition-colors mt-6 cursor-pointer"
+            disabled={submitState === 'submitting'}
+            className="w-full bg-cb-blue text-white rounded-full py-4 font-semibold text-base hover:bg-blue-600 transition-colors mt-6 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Send Inquiry
+            {submitState === 'submitting' ? 'Sending...' : 'Send Inquiry'}
           </button>
           <p className="text-text-muted text-sm text-center mt-4">
             We typically respond within 24 hours.

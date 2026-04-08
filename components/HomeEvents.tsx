@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { Check } from 'lucide-react'
@@ -40,8 +41,8 @@ export default function HomeEvents() {
     <div className="py-24 bg-bg-primary relative glow-blue grain-light">
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto px-6">
         {/* Left — Placeholder */}
-        <div className="bg-surface border border-white/10 rounded-2xl aspect-[4/3] overflow-hidden order-2 lg:order-1">
-          <img src="/images/event-performance.jpg" alt="McPhee Big Band at a private event" className="w-full h-full object-cover" />
+        <div className="bg-surface border border-white/10 rounded-2xl aspect-[4/3] overflow-hidden order-2 lg:order-1 relative">
+          <Image src="/images/event-performance.jpg" alt="McPhee Big Band at a private event" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
         </div>
 
         {/* Right — Content */}
