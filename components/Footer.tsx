@@ -1,5 +1,6 @@
 'use client'
 
+import Logo from '@/components/Logo'
 import EmailSignup from '@/components/EmailSignup'
 
 function YouTubeIcon({ className }: { className?: string }) {
@@ -34,11 +35,7 @@ export default function Footer() {
         {/* Left — Logo + tagline */}
         <div>
           <div className="mb-2">
-            <img
-              src="/images/mcphee-big-band-logo.svg"
-              alt="McPhee Big Band"
-              className="h-16 w-auto"
-            />
+            <Logo size="lg" />
           </div>
           <p className="text-text-muted text-sm mt-2">
             Southern California&apos;s finest young jazz musicians.

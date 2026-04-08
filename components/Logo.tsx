@@ -1,16 +1,15 @@
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg'
-  withBackground?: boolean
   className?: string
 }
 
 const sizes = {
-  sm: { container: 'w-10 h-10', svg: 24 },
-  md: { container: 'w-12 h-12', svg: 30 },
-  lg: { container: 'w-16 h-16', svg: 40 },
+  sm: 'text-lg',
+  md: 'text-xl',
+  lg: 'text-2xl',
 }
 
-function LogoMark({ size = 24, color = 'white' }: { size?: number; color?: string }) {
+export function NoteIcon({ size = 24, className = '' }: { size?: number; className?: string }) {
   return (
     <svg
       width={size}
@@ -19,73 +18,38 @@ function LogoMark({ size = 24, color = 'white' }: { size?: number; color?: strin
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
+      className={className}
     >
-      {/*
-        M monogram where the right stroke rises into a musical eighth note.
-        Left leg | center V | right leg extends up → curves into a note flag
-        with a filled oval note head at the base of the right stroke.
-      */}
-
-      {/* Left vertical stroke of M */}
+      {/* Stem */}
+      <rect x="34" y="8" width="4" height="40" rx="2" fill="white" />
+      {/* Flag */}
       <path
-        d="M10 54 L10 14 L14 14 L14 54 Z"
-        fill={color}
-      />
-
-      {/* Left diagonal of M (down to center) */}
-      <path
-        d="M14 14 L30 38 L26 38 L10 14 Z"
-        fill={color}
-      />
-
-      {/* Right diagonal of M (center back up) */}
-      <path
-        d="M30 38 L46 14 L50 14 L34 38 Z"
-        fill={color}
-      />
-
-      {/* Right stroke — extends up into note stem */}
-      <path
-        d="M46 54 L46 8 L50 8 L50 54 Z"
-        fill={color}
-      />
-
-      {/* Eighth note flag — curves out from top of right stem */}
-      <path
-        d="M50 8 C50 8 58 10 58 18 C58 24 52 24 50 22"
-        stroke={color}
-        strokeWidth="3.5"
+        d="M38 8 C38 8 50 10 50 20 C50 28 40 28 38 24"
+        stroke="white"
+        strokeWidth="4"
         fill="none"
         strokeLinecap="round"
       />
-
-      {/* Note head — filled oval at base of right stroke */}
+      {/* Note head */}
       <ellipse
-        cx="43"
-        cy="54"
-        rx="5.5"
-        ry="4"
-        transform="rotate(-20 43 54)"
-        fill={color}
+        cx="28"
+        cy="48"
+        rx="10"
+        ry="7"
+        transform="rotate(-20 28 48)"
+        fill="white"
       />
     </svg>
   )
 }
 
-export default function Logo({ size = 'sm', withBackground = true, className = '' }: LogoProps) {
-  const s = sizes[size]
-
-  if (!withBackground) {
-    return <LogoMark size={s.svg} />
-  }
-
+export default function Logo({ size = 'sm', className = '' }: LogoProps) {
   return (
-    <div
-      className={`${s.container} bg-cb-blue rounded-lg flex items-center justify-center flex-shrink-0 ${className}`}
+    <span
+      className={`font-[var(--font-playfair)] font-black tracking-tight text-white ${sizes[size]} ${className}`}
+      style={{ fontFamily: 'var(--font-playfair)' }}
     >
-      <LogoMark size={s.svg} />
-    </div>
+      McPhee Big Band
+    </span>
   )
 }
-
-export { LogoMark }

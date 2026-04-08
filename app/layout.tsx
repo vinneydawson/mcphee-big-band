@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import { Suspense } from 'react'
 import './globals.css'
 import Navbar from '@/components/Navbar'
@@ -11,6 +11,12 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  weight: ['700', '800', '900'],
 })
 
 export const metadata: Metadata = {
@@ -41,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} dark`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable} dark`}>
       <body>
         <a
           href="#main-content"

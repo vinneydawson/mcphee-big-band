@@ -80,9 +80,8 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Left — Logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center">
             <Logo size="sm" />
-            <span className="text-white font-semibold text-base hidden sm:inline">McPhee Big Band</span>
           </Link>
 
           {/* Center — Desktop Nav Links */}
