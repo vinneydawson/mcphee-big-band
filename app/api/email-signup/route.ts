@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     await getResend().emails.send({
       from: 'McPhee Big Band <onboarding@resend.dev>',
-      to: 'account@uxsecuremail.com',
+      to: 'vinneydawson@icloud.com',
       subject: `New Email Subscriber: ${email}`,
       html: signupNotificationHtml(email),
     })

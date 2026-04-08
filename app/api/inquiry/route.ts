@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     await getResend().emails.send({
       from: 'McPhee Big Band <onboarding@resend.dev>',
-      to: 'account@uxsecuremail.com',
+      to: 'vinneydawson@icloud.com',
       subject: `New Inquiry: ${eventTypeLabels[eventType] || eventType} — ${name}`,
       html: inquiryEmailHtml({ name, email, phone, eventType, eventDate, venue, guestCount, message }),
       replyTo: email,
