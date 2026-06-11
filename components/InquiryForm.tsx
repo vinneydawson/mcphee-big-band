@@ -93,7 +93,8 @@ export default function InquiryForm() {
       newErrors.message = 'Please provide a bit more detail (at least 10 characters)'
     }
 
-    setErrors(newErrors)
+    const frame = window.requestAnimationFrame(() => setErrors(newErrors))
+    return () => window.cancelAnimationFrame(frame)
   }, [form, touched, attemptedSubmit])
 
   const handleChange = (

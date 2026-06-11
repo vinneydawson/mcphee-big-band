@@ -63,12 +63,18 @@ export default function DatePicker({ value, onChange, className = '', ariaDescri
 
   // Determine drop direction based on available space
   useEffect(() => {
-    if (open && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect()
+    if (!open || !triggerRef.current) return
+
+    const frame = window.requestAnimationFrame(() => {
+      const rect = triggerRef.current?.getBoundingClientRect()
+      if (!rect) return
+
       const spaceBelow = window.innerHeight - rect.bottom
       const calendarHeight = 370 // approximate dropdown height
       setDropUp(spaceBelow < calendarHeight && rect.top > calendarHeight)
-    }
+    })
+
+    return () => window.cancelAnimationFrame(frame)
   }, [open])
 
   const prevMonth = () => {

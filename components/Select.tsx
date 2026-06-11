@@ -58,12 +58,18 @@ export default function Select({
 
   // Determine drop direction
   useEffect(() => {
-    if (open && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect()
+    if (!open || !triggerRef.current) return
+
+    const frame = window.requestAnimationFrame(() => {
+      const rect = triggerRef.current?.getBoundingClientRect()
+      if (!rect) return
+
       const spaceBelow = window.innerHeight - rect.bottom
       const dropdownHeight = Math.min(options.length * 44 + 16, 260)
       setDropUp(spaceBelow < dropdownHeight && rect.top > dropdownHeight)
-    }
+    })
+
+    return () => window.cancelAnimationFrame(frame)
   }, [open, options.length])
 
   const select = (val: string) => {
